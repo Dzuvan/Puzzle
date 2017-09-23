@@ -59,4 +59,3 @@ void Game::clean() {
 void Game::handle_events() {
 	InputHandler::Instance()->update();
 }
-
