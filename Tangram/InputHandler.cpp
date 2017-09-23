@@ -2,6 +2,7 @@
 #include "InputHandler.h"
 #include "Game.h"
 #include "Vector2D.h"
+#include <iostream>
 
 InputHandler* InputHandler::s_instance = 0;
 
@@ -29,6 +30,7 @@ void InputHandler::update() {
 
 void InputHandler::on_mouse_button_down(SDL_Event& event) {
 	if (event.button.button == SDL_BUTTON_LEFT) {
+		std::cout << "LEFT";
 		m_mouse_button_states[LEFT] = true;
 	}
 	if (event.button.button == SDL_BUTTON_MIDDLE) {
@@ -36,6 +38,7 @@ void InputHandler::on_mouse_button_down(SDL_Event& event) {
 	}
 	if (event.button.button == SDL_BUTTON_RIGHT) {
 		m_mouse_button_states[RIGHT] = true;
+		std::cout << "RIGHT";
 	}
 }
 
@@ -54,4 +57,5 @@ void InputHandler::on_mouse_button_up(SDL_Event& event) {
 void InputHandler::on_mouse_move(SDL_Event& event) {
 	m_mouse_position->set_x(event.motion.x);
 	m_mouse_position->set_y(event.motion.y);
+	std::cout << "MOVE" << event.motion.x<<"," << event.motion.y;
 }

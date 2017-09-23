@@ -1,4 +1,6 @@
 #pragma once
+
+#include<SDL.h>
 #include <vector>
 #include "Vector2D.h"
 
@@ -35,6 +37,12 @@ public:
 	}
 	void update();
 	void clean();
+
+	void reset() {
+		for (int i = 0; i < 3; i++) {
+			m_mouse_button_states[i] = false;
+		}
+	}
 
 	bool get_mouse_button_state(int button_number) {
 		return m_mouse_button_states[button_number];
