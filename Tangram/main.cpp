@@ -2,33 +2,38 @@
 #include <SDL.h>
 #include "Game.h"
 
-#define FPS 60
-#define DELAY_TIME 1000 / FPS
+const int SCREEN_WIDTH = 1024;
+const int SCREEN_HEIGHT = 700;
 
-int main(int argc, char** argv) {
-	Uint32 frame_start, frame_time;
-	if (Game::Instance()->init("Tangram Puzzle", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-		640, 480, true)) {
-		std::cout << "Init success\n";
+const int FPS = 30;
+const int DELAY_TIME = 1000.0f / FPS;
 
-		while (Game::Instance()->running()) {
-			frame_start = SDL_GetTicks();
+int main( int argc, char* args[] ) {
+    Uint32 frameStart, frameTime;
+    std::cout<<"Starting initialization\n"<<std::endl;
+    if (Game::Instance()->init("Tangram Puzzle",
+            SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+            SCREEN_WIDTH, SCREEN_HEIGHT, false)) {
+        std::cout<<"Ready to go\n"<<std::endl;
+        
+        while (Game::Instance()->running()) {
+            frameStart = SDL_GetTicks();
 
-			Game::Instance()->handle_events();
-			Game::Instance()->update();
-			Game::Instance()->render();
-			
-			frame_time = SDL_GetTicks() - frame_start;
-			if (frame_time < DELAY_TIME) {
-				SDL_Delay((int)(DELAY_TIME - frame_time));
-			}
-		}
-	}
-	else {
-		std::cout << "Game init failed" << SDL_GetError() << "\n";
-		return -1;
-	}
+            Game::Instance()->handleEvents();
+            Game::Instance()->update();
+            Game::Instance()->render();
 
-	Game::Instance()->clean();
-	return 0;
+            frameTime = SDL_GetTicks() - frameStart;
+
+            if (frameTime < DELAY_TIME){
+                SDL_Delay((int)(DELAY_TIME - frameTime));
+            }
+        }
+    } else {
+        std::cout<<"Chuck Testa\n"<<std::endl;
+        return -1;
+    }
+    
+    Game::Instance()->clean();
+    return 0;
 }

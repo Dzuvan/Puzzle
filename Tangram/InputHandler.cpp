@@ -1,61 +1,68 @@
-#include <SDL.h>
+#include <iostream>
 #include "InputHandler.h"
 #include "Game.h"
-#include "Vector2D.h"
-#include <iostream>
 
-InputHandler* InputHandler::s_instance = 0;
+InputHandler* InputHandler::s_pInstance = 0;
 
 void InputHandler::update() {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_QUIT :
-			Game::Instance()->clean();
-			break;
-		case SDL_MOUSEBUTTONDOWN: 
-			on_mouse_button_down(event);
-			break;
-		case SDL_MOUSEBUTTONUP:
-			on_mouse_button_up(event);
-			break;
-		case  SDL_MOUSEMOTION:
-			on_mouse_move(event);
-			break;
-		default: 
-			break;
-		}
-	}
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event)) {
+        m_keystates = SDL_GetKeyboardState(0);
+        if (event.type == SDL_QUIT) {
+            Game::Instance()->quit();
+           
+        }
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+                m_mouseButtonPosition->setX(event.button.x);
+                m_mouseButtonPosition->setY(event.button.y);
+                up = false;
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                 m_mouseButtonStates[LEFT] = true;
+            }
+
+            if (event.button.button == SDL_BUTTON_MIDDLE) {
+                m_mouseButtonStates[MIDDLE] = true;
+            }
+
+            if (event.button.button == SDL_BUTTON_RIGHT) {
+                m_mouseButtonStates[RIGHT] = true;
+            }
+        }
+
+        if (event.type == SDL_MOUSEBUTTONUP) {
+            up = true;
+            if (event.button.button == SDL_BUTTON_LEFT) {
+                m_mouseButtonStates[LEFT] = false;
+            }
+
+            if (event.button.button == SDL_BUTTON_MIDDLE) {
+                m_mouseButtonStates[MIDDLE] = false;
+            }
+
+            if (event.button.button == SDL_BUTTON_RIGHT) {
+                m_mouseButtonStates[RIGHT] = false;
+            }
+        }
+
+        if (event.type == SDL_MOUSEMOTION) {
+            m_mousePosition->setX(event.motion.x);
+            m_mousePosition->setY(event.motion.y);
+        }
+    }
 }
 
-void InputHandler::on_mouse_button_down(SDL_Event& event) {
-	if (event.button.button == SDL_BUTTON_LEFT) {
-		std::cout << "LEFT";
-		m_mouse_button_states[LEFT] = true;
-	}
-	if (event.button.button == SDL_BUTTON_MIDDLE) {
-		m_mouse_button_states[MIDDLE] = true;
-	}
-	if (event.button.button == SDL_BUTTON_RIGHT) {
-		m_mouse_button_states[RIGHT] = true;
-		std::cout << "RIGHT";
-	}
+bool InputHandler::isKeyDown(SDL_Scancode key) {
+    if (m_keystates != 0) {
+        if (m_keystates[key] == 1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    return false;
 }
 
-void InputHandler::on_mouse_button_up(SDL_Event& event) {
-	if (event.button.button == SDL_BUTTON_LEFT) {
-		m_mouse_button_states[LEFT] = false;
-	}
-	if (event.button.button == SDL_BUTTON_MIDDLE) {
-		m_mouse_button_states[MIDDLE] = false;
-	}
-	if (event.button.button == SDL_BUTTON_RIGHT) {
-		m_mouse_button_states[RIGHT] = false;
-	}
-}
-
-void InputHandler::on_mouse_move(SDL_Event& event) {
-	m_mouse_position->set_x(event.motion.x);
-	m_mouse_position->set_y(event.motion.y);
-	std::cout << "MOVE" << event.motion.x<<"," << event.motion.y;
+void InputHandler::clean() {
 }
