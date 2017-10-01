@@ -1,11 +1,11 @@
 #include <iostream>
-#include "GameObject.h"
+#include "Piece.h"
 #include "Game.h"
 #include "Vec2.h"
 #include "InputHandler.h"
 #include "Board.h"
 
-void GameObject::render() {
+void Piece::render() {
     SDL_SetRenderDrawColor(Game::Instance()->getRenderer(), m_color.r, m_color.g, m_color.b, m_color.a);
     SDL_Rect rects[] = {
      m_position.getX(), m_position.getY(), m_dimension.getX(), m_dimension.getY(),
@@ -15,7 +15,7 @@ void GameObject::render() {
     SDL_RenderDrawRects(Game::Instance()->getRenderer(),rects, 2);
 }
 
-void GameObject::update() {
+void Piece::update() {
     if (InputHandler::Instance()->getMouseButtonState(0) &&
         intersects(m_position, m_dimension, *InputHandler::Instance()->getMouseButtonPosition())
         || intersects(m_position2, m_dimension2, *InputHandler::Instance()->getMouseButtonPosition())) {
@@ -51,7 +51,7 @@ void GameObject::update() {
    }
 }
 
-int GameObject::getHeight() {
+int Piece::getHeight() {
     int height1 = m_position.getY() + m_dimension.getY();
     int height2 = m_position2.getY() + m_dimension2.getY();
 
@@ -61,7 +61,7 @@ int GameObject::getHeight() {
         return height2;
 }
 
-bool GameObject::intersects(Vec2 object, Vec2 dimensions, Vec2 mouse) {
+bool Piece::intersects(Vec2 object, Vec2 dimensions, Vec2 mouse) {
     if(mouse.getX() < object.getX() || mouse.getY() < object.getY()) {
         return false;
     }
@@ -72,6 +72,6 @@ bool GameObject::intersects(Vec2 object, Vec2 dimensions, Vec2 mouse) {
     return true;
 }
 
-void GameObject::clean() {
+void Piece::clean() {
 
 }

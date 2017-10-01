@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <vector>
-#include "GameObject.h"
+#include "Piece.h"
 #include "GameStateMachine.h"
 
 class Game {
@@ -23,10 +23,6 @@ public:
     void clean();
     void quit();
 
-    GameObject* findMaxHeight(std::vector<GameObject*>);
-    bool isOverlapping(GameObject*, GameObject*);
-    bool checkOnTop(GameObject*);
-
     SDL_Renderer* getRenderer() const { return m_pRenderer; }
     GameStateMachine* getStateMachine(){ return m_pGameStateMachine; }
 
@@ -46,11 +42,10 @@ private:
     
     SDL_Window* m_pWindow;
     SDL_Renderer* m_pRenderer;
-    
+
     GameStateMachine* m_pGameStateMachine;
     
     bool m_bRunning;
-    
     int m_gameWidth;
     int m_gameHeight;
 };

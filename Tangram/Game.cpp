@@ -4,13 +4,11 @@
 #include <SDL_image.h>
 #include "InputHandler.h"
 #include "Game.h"
-#include "GameObject.h"
+#include "Piece.h"
 #include "PlayState.h"
 #include "MainMenuState.h"
-#include "MenuButton.h"
 
 Game* Game::s_pInstance = 0;
-GameObject* lastDragged = nullptr;
 
 bool Game::init(const char *title, int xpos, int ypos, int width, int height, int flags){
     if (SDL_Init(SDL_INIT_VIDEO| SDL_INIT_AUDIO | SDL_INIT_TIMER)  == 0) {
@@ -36,10 +34,11 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height, in
         std::cout<<"SDL Initialization failed\n"<<std::endl;
         return false;
     }
-    std::cout<<"Initialization complete\n"<<std::endl;
+    std::cout<<"Initialization compstd::vector<std::vector<int>>e\n"<<std::endl;
     
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new MainMenuState());
+
     m_bRunning = true;
     return true;
 }
@@ -47,7 +46,9 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height, in
 void Game::render() {
     SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 0);
     SDL_RenderClear(m_pRenderer);    
+
     m_pGameStateMachine->render();
+
     SDL_RenderPresent(m_pRenderer);
 }
 
@@ -55,45 +56,6 @@ void Game::update() {
       m_pGameStateMachine->update();
 }
 
-GameObject* Game::findMaxHeight(std::vector<GameObject*> v) {
-    int smallest_element  = v[0]->getPosition().getY();
-    int  largest_element = v[0]->getPosition().getY();
-    for (int i = 0; i < v.size(); i++) {
-        if(v[i]->getPosition().getY() < smallest_element) {
-              smallest_element= v[i]->getPosition().getY();
-            }
-        if(v[i]->getPosition().getY() > largest_element) {
-              largest_element= v[i]->getPosition().getY();
-            }
-    }
-    for (int i = 0; i < v.size(); i++) {
-           if (v[i]->getPosition().getY() == largest_element)
-             return v[i];
-    }
-    return v[0];
-}
-bool Game::isOverlapping(GameObject* lastDragged, GameObject* object){
-    if(lastDragged->getPosition().getX() < object->getPosition().getX() || lastDragged->getPosition().getY() < object->getPosition().getY()) {
-        return false;
-    }
-
-    if(lastDragged->getPosition().getX() > object->getPosition().getX() || lastDragged->getPosition().getY() > object->getPosition().getY()) {
-         return false;
-    }
-    return true;
-}
-
-bool Game::checkOnTop(GameObject* object){
-    Vec2 mouse = *InputHandler::Instance()->getMouseButtonPosition();
-    if(mouse.getX() < object->getPosition().getX() || mouse.getY() < object->getPosition().getY()) {
-        return false;
-    }
-
-    if(mouse.getX() > object->getPosition().getX() || mouse.getY() > object->getPosition().getY()) {
-         return false;
-    }
-    return true;
-}
 
 void Game::handleEvents() {
     InputHandler::Instance()->update();

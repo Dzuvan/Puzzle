@@ -6,7 +6,7 @@ const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 700;
 
 const int FPS = 30;
-const int DELAY_TIME = 1000.0f / FPS;
+const int DELAY_TIME = 1000 / FPS;
 
 int main( int argc, char* args[] ) {
     Uint32 frameStart, frameTime;

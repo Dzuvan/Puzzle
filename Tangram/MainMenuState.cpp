@@ -1,13 +1,13 @@
-#include <vector>
 #include <iostream>
 #include <string>
+#include <vector>
+#include "Object.h"
+#include "TextureManager.h"
+#include "LoaderParams.h"
 #include "MainMenuState.h"
 #include "PlayState.h"
 #include "Game.h"
 #include "MenuButton.h"
-#include "Object.h"
-#include "TextureManager.h"
-#include "LoaderParams.h"
 
 const std::string MainMenuState::s_menuID = "MENU";
 
@@ -25,6 +25,7 @@ bool MainMenuState::onEnter() {
             "playbutton"), s_menuToPlay);
     Object* button2 = new MenuButton(new LoaderParams(300, 400, 400, 100,
             "exitbutton"),s_exitFromMenu);
+
     m_buttons.push_back(button1);
     m_buttons.push_back(button2);
 
@@ -33,21 +34,22 @@ bool MainMenuState::onEnter() {
 }
 
 bool MainMenuState::onExit() {
-    for (int i = 0; i < m_buttons.size(); i++) {
+    for (unsigned int i = 0; i < m_buttons.size(); i++) {
         m_buttons[i]->clean();
     }
     m_buttons.clear();
     TextureManager::Instance()->clearFromTextureMap("playbutton");
     TextureManager::Instance()->clearFromTextureMap("exitbutton");
 
-    std::cout << "Exiting MenuState\n";
+    std::cout << "Exiting menu state\n"<<std::endl;
     return true;
 }
 
 void MainMenuState::update() {
-    for (int i = 0; i < m_buttons.size(); i++) {
+    for (unsigned int i = 0; i < m_buttons.size(); i++) {
         m_buttons[i]->update();
     }
+    Game::Instance()->getStateMachine()->dequeState();
 }
 
 void MainMenuState::render() {
@@ -57,8 +59,7 @@ void MainMenuState::render() {
 }
 
 void MainMenuState::s_menuToPlay() {
-    std::cout << "Play button clicked\n";
-
+    std::cout << "Play button clicked\n"<<std::endl;
     Game::Instance()->getStateMachine()->changeState(new PlayState());
 }
 

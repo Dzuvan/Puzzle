@@ -2,11 +2,10 @@
 
 #include <string>
 #include <vector>
-#include "GameObject.h"
 #include "GameState.h"
 #include "Object.h"
 
-class MainMenuState: public GameState{
+class MainMenuState: public GameState {
 public:
     virtual void update();
     virtual void render();

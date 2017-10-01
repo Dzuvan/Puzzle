@@ -30,44 +30,44 @@ bool PauseState::onEnter() {
     m_buttons.push_back(button1);
     m_buttons.push_back(button2);
 
-    std::cout << "entering PauseState\n";
+    std::cout << "Entering pause state\n" << std::endl;
     return true;
 }
 
 bool PauseState::onExit() {
-	for (int i = 0; i < m_buttons.size(); i++)
-	{
+	for (unsigned int i = 0; i < m_buttons.size(); i++) {
 		m_buttons[i]->clean();
 	}
-
 	m_buttons.clear();
-        TextureManager::Instance()->clearFromTextureMap("mainbutton");
-        TextureManager::Instance()->clearFromTextureMap("resumebutton");
+    TextureManager::Instance()->clearFromTextureMap("mainbutton");
+    TextureManager::Instance()->clearFromTextureMap("resumebutton");
 
 	// reset the mouse button states to false
 	InputHandler::Instance()->reset();
 
-	std::cout << "exiting PauseState\n";
+	std::cout << "Exiting pause state\n"<<std::endl;
 	return true;
 }
 
 void PauseState::s_pauseToMain() {
+    std::cout << "Main menu button clicked\n" << std::endl;
     Game::Instance()->getStateMachine()->changeState(new MainMenuState());
 }
 
 void PauseState::s_resumePlay() {
+    std::cout << "Resume button clicked\n" << std::endl;
     Game::Instance()->getStateMachine()->popState();
 }
 
-void PauseState::update(){
-    for (int i = 0; i < m_buttons.size(); i++) {
+void PauseState::update() {
+    for (unsigned int i = 0; i < m_buttons.size(); i++) {
         m_buttons[i]->update();
     }
+    Game::Instance()->getStateMachine()->dequeState();
 }
 
-void PauseState::render()
-{
-    for (int i = 0; i < m_buttons.size(); i++) {
+void PauseState::render() {
+    for (unsigned int i = 0; i < m_buttons.size(); i++) {
         m_buttons[i]->draw();
     }
 }
