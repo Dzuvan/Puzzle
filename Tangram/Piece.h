@@ -1,12 +1,16 @@
 #pragma once
 
-#include "Vec2.h"
 #include <SDL.h>
+#include <vector>
+#include "Vec2.h"
 
 class Piece{
 public:
-    Piece(){}
-    Piece(Vec2 position, Vec2 position2, Vec2 dimension, Vec2 dimension2,SDL_Color color): 
+    Piece(): 
+        m_position(Vec2(0,0)),m_position2(Vec2(0,0)),
+        m_dimension(Vec2(0, 0)), m_dimension2(Vec2(0,0)), 
+        offset(Vec2(0,0)), offset2(Vec2(0,0)) {}
+    Piece(Vec2 position, Vec2 position2, Vec2 dimension, Vec2 dimension2,SDL_Color color):
         m_position(position), m_position2(position2), m_dimension(dimension), m_dimension2(dimension2), m_color(color) {}
     ~Piece(){}
 
@@ -14,15 +18,24 @@ public:
     void update();
     void clean();
 
-    int getHeight();
+    int getArea();
 
-    bool getDragged() { return dragged; }
-    void setDragged( bool dr) { dragged = dr; }
+    void setOffset(Vec2 off) { offset = off; }
+    void setOffset2(Vec2 off) { offset = off; }
+
+    void setSelected(bool selected) { m_selected = selected;  }
+    bool getSelected() { return m_selected;  }
 
     bool intersects(Vec2, Vec2, Vec2);
     void setPosition(Vec2 position) { m_position = position; }
 
     Vec2 getPosition() { return m_position; }
+    Vec2 getPosition2() { return m_position2; }
+
+    Vec2 getDimension() { return m_dimension; }
+    Vec2 getDimension2() { return m_dimension2; }
+
+    bool checkWin(std::vector<int>);
 
 private:
     SDL_Color m_color;
@@ -33,10 +46,10 @@ private:
     Vec2 m_dimension;
     Vec2 m_dimension2;
 
-    Vec2 offset;    
+    Vec2 offset;
     Vec2 offset2;
 
     bool dragging;
-    bool dragged;
-    bool m_onTop;
+    bool playing;
+    bool m_selected;
 };

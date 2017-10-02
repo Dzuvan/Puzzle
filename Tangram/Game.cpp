@@ -7,11 +7,12 @@
 #include "Piece.h"
 #include "PlayState.h"
 #include "MainMenuState.h"
+#include "SoundManager.h"
 
 Game* Game::s_pInstance = 0;
 
 bool Game::init(const char *title, int xpos, int ypos, int width, int height, int flags){
-    if (SDL_Init(SDL_INIT_VIDEO| SDL_INIT_AUDIO | SDL_INIT_TIMER)  == 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER)  == 0) {
         std::cout<<"Subsystem initialization success\n"<<std::endl;
         m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
 
@@ -35,17 +36,18 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height, in
         return false;
     }
     std::cout<<"Initialization compstd::vector<std::vector<int>>e\n"<<std::endl;
-    
+
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new MainMenuState());
 
+    SoundManager::Instance()->load("assets/click-sound.wav","1", sound_type(1));
     m_bRunning = true;
     return true;
 }
 
 void Game::render() {
     SDL_SetRenderDrawColor(m_pRenderer, 0, 0, 0, 0);
-    SDL_RenderClear(m_pRenderer);    
+    SDL_RenderClear(m_pRenderer);
 
     m_pGameStateMachine->render();
 
