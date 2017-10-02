@@ -51,6 +51,7 @@ bool PauseState::onExit() {
 
 void PauseState::s_pauseToMain() {
     std::cout << "Main menu button clicked\n" << std::endl;
+    Game::Instance()->getStateMachine()->popState();
     Game::Instance()->getStateMachine()->changeState(new MainMenuState());
 }
 

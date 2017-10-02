@@ -6,13 +6,18 @@
 
 class Piece{
 public:
-    Piece(): 
+    Piece():
         m_position(Vec2(0,0)),m_position2(Vec2(0,0)),
-        m_dimension(Vec2(0, 0)), m_dimension2(Vec2(0,0)), 
-        offset(Vec2(0,0)), offset2(Vec2(0,0)) {}
+        m_dimension(Vec2(0, 0)), m_dimension2(Vec2(0,0)),
+        offset(Vec2(0,0)), offset2(Vec2(0,0)),
+        dragging(false),
+        m_selected(false),
+        playing(false)
+        {}
     Piece(Vec2 position, Vec2 position2, Vec2 dimension, Vec2 dimension2,SDL_Color color):
         m_position(position), m_position2(position2), m_dimension(dimension), m_dimension2(dimension2), m_color(color) {}
-    ~Piece(){}
+    ~Piece(){
+    }
 
     void render();
     void update();
@@ -21,7 +26,7 @@ public:
     int getArea();
 
     void setOffset(Vec2 off) { offset = off; }
-    void setOffset2(Vec2 off) { offset = off; }
+    void setOffset2(Vec2 off2) { offset2 = off2; }
 
     void setSelected(bool selected) { m_selected = selected;  }
     bool getSelected() { return m_selected;  }

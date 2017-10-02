@@ -73,7 +73,9 @@ bool Piece::intersects(Vec2 object, Vec2 dimensions, Vec2 mouse) {
     return true;
 }
 
-void Piece::clean() {}
+void Piece::clean() {
+    Piece::~Piece();
+}
 
 bool Piece::checkWin(std::vector<int> coords) {
     if (m_position.getX() == coords[0] && m_position.getY() == coords[1]) {

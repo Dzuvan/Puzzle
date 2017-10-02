@@ -6,6 +6,7 @@ class Vec2 {
     public:
         Vec2(){}
         Vec2(int x, int y): m_x(x), m_y(y) {}
+        ~Vec2() {}
 
         int getX() { return m_x; }
         int getY() { return m_y; }

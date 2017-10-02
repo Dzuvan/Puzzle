@@ -15,8 +15,6 @@
 #include "GameOverState.h"
 
 const std::string PlayState::s_playID = "PLAY";
-int left_x = rand() % (750 - 600 + 1) + 600;
-int left_y = rand() % (500 - 100 + 1) + 100;
 
 bool PlayState::onEnter() {
     srand(time(NULL));
@@ -184,9 +182,11 @@ bool PlayState::onEnter() {
 bool PlayState::onExit() {
     for (unsigned int i = 0; i < m_pieces.size(); i++) {
         m_pieces[i]->clean();
-        m_pieces[i]->setOffset(Vec2(0, 0));
+        delete m_pieces[i];
     }
+    std::vector<Piece*>().swap(m_pieces);
     m_pieces.clear();
+    m_pieces.shrink_to_fit();
     std::cout << "Exiting playState\n" << std::endl;
     return true;
 }
