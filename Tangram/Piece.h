@@ -6,30 +6,24 @@
 
 class Piece{
 public:
-    Piece():
-        m_position(Vec2(0,0)),m_position2(Vec2(0,0)),
-        m_dimension(Vec2(0, 0)), m_dimension2(Vec2(0,0)),
-        offset(Vec2(0,0)), offset2(Vec2(0,0)),
-        dragging(false),
-        m_selected(false),
-        playing(false)
-        {}
+    Piece() {}
     Piece(Vec2 position, Vec2 position2, Vec2 dimension, Vec2 dimension2,SDL_Color color):
-        m_position(position), m_position2(position2), m_dimension(dimension), m_dimension2(dimension2), m_color(color) {}
-    ~Piece(){
-    }
+        m_position(position), m_position2(position2), m_dimension(dimension), m_dimension2(dimension2), m_color(color),
+        offset(Vec2(0,0)), offset2(Vec2(0,0)), m_height(0) {}
+    ~Piece(){}
 
     void render();
     void update();
     void clean();
 
-    int getArea();
-
     void setOffset(Vec2 off) { offset = off; }
     void setOffset2(Vec2 off2) { offset2 = off2; }
 
     void setSelected(bool selected) { m_selected = selected;  }
-    bool getSelected() { return m_selected;  }
+    bool getSelected() { return m_selected; }
+
+    void setZ(int z) { m_height = z; }
+    int getZ() const { return m_height; }
 
     bool intersects(Vec2, Vec2, Vec2);
     void setPosition(Vec2 position) { m_position = position; }
@@ -44,6 +38,8 @@ public:
 
 private:
     SDL_Color m_color;
+
+    int m_height;
 
     Vec2 m_position;
     Vec2 m_position2;

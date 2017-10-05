@@ -41,6 +41,7 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height, in
     m_pGameStateMachine->changeState(new MainMenuState());
 
     SoundManager::Instance()->load("assets/click-sound.wav","1", sound_type(1));
+    SoundManager::Instance()->load("assets/Black-Light-Sound-Dark-Clouds-Covering-The-Horizon.mp3","2", sound_type(2));
     m_bRunning = true;
     return true;
 }

@@ -16,11 +16,9 @@ public:
 
     virtual std::string getStateID() const { return s_playID; }
 
-    bool intersects(Piece*, Piece*);
-    bool mouseOverlap(Piece*, Vec2*);
+    bool intersects(int, int, int, int, int, int);
 private:
     static const std::string s_playID;
-    std::vector<Piece*> m_pieces;
-    std::vector<Piece*> m_intersected_pieces;
+ //   std::vector<Piece*> m_pieces;
     std::vector<std::vector<std::vector<int>>> solutions;
 };
