@@ -187,8 +187,6 @@ bool PlayState::onExit() {
         delete m_pieces[i];
     }
     std::vector<Piece*>().swap(m_pieces);
-    m_pieces.clear();
-    m_pieces.shrink_to_fit();
     std::cout << "Exiting playState\n" << std::endl;
     return true;
 }
@@ -244,13 +242,10 @@ void PlayState::update() {
                 m_pieces[4]->checkWin(solution[4]) &&
                 m_pieces[5]->checkWin(solution[5]) &&
                 m_pieces[6]->checkWin(solution[6])) {
-                Game::Instance()->getStateMachine()->pushState(new GameOverState());
-                m_pieces[i]->setOffset(Vec2(0, 0));
-                m_pieces[i]->setOffset2(Vec2(0, 0));
+                Game::Instance()->getStateMachine()->changeState(new GameOverState());
             }
         }
     }
-    Game::Instance()->getStateMachine()->dequeState();
 }
 
 void PlayState::render() {
