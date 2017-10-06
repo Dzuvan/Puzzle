@@ -43,9 +43,9 @@ bool GameOverState::onEnter() {
         return false;
     }
 
-    Object* gameOverText = new MenuButton(new LoaderParams(500, 100, 190, 30, "gameovertext"), s_none);
+    Object* gameOverText = new MenuButton(new LoaderParams(412, 100, 190, 30, "gameovertext"), s_none);
     Object* button1 = new MenuButton(new LoaderParams(400, 200, 200, 80 , "mainbutton"), s_gameOverToMain);
-    Object* button2 = new MenuButton(new LoaderParams(400, 450, 200, 80, "restartbutton"), s_restartPlay);
+    Object* button2 = new MenuButton(new LoaderParams(400, 350, 200, 80, "restartbutton"), s_restartPlay);
     
     m_buttons.push_back(gameOverText);
     m_buttons.push_back(button1);

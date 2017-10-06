@@ -5,6 +5,7 @@
 #include "GameState.h"
 #include "Piece.h"
 #include "Vec2.h"
+#include "Object.h"
 
 class PlayState : public GameState {
 public:
@@ -16,9 +17,10 @@ public:
 
     virtual std::string getStateID() const { return s_playID; }
 
-    bool intersects(int, int, int, int, int, int);
+    bool intersects(Vec2, Vec2, Vec2);
 private:
     static const std::string s_playID;
  //   std::vector<Piece*> m_pieces;
     std::vector<std::vector<std::vector<int>>> solutions;
+    Object* button1;
 };

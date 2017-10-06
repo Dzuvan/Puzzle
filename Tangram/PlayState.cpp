@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <ctime>
 #include <algorithm>
+#include "Object.h"
+#include "MenuButton.h"
 #include "PlayState.h"
 #include "Game.h"
 #include "InputHandler.h"
@@ -14,6 +16,8 @@
 #include "Game.h"
 #include "SoundManager.h"
 #include "GameOverState.h"
+#include "TextureManager.h"
+#include "LoaderParams.h"
 
 const std::string PlayState::s_playID = "PLAY";
 
@@ -25,8 +29,12 @@ Piece* piece5;
 Piece* piece6;
 Piece* piece7;
 std::vector<Piece*>m_pieces;
+
 bool PlayState::onEnter() {
+
+    // Bez ovoga random uvek bira istu vrednost. 
     srand(time(NULL));
+
     std::vector<std::vector<int>> solution_1 = { {300, 400}, {200, 300}, {100, 100}, {500, 300}, {100, 300}, {300, 200}, {200, 100} };
     solutions.push_back(solution_1);
     std::vector<std::vector<int>> solution_2 = { {300, 400}, {200, 300}, {500, 100}, {500, 300}, {100, 300}, {200, 200}, {100, 100} };
@@ -187,12 +195,14 @@ bool PlayState::onExit() {
         delete m_pieces[i];
     }
     std::vector<Piece*>().swap(m_pieces);
+    InputHandler::Instance()->reset();
     std::cout << "Exiting playState\n" << std::endl;
     return true;
 }
 
 std::vector<int> zs;
 std::vector<Piece*> overlaps;
+
 void PlayState::update() {
     if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
         Game::Instance()->getStateMachine()->pushState(new PauseState());
@@ -200,15 +210,8 @@ void PlayState::update() {
 
     if (InputHandler::Instance()->getMouseButtonState(LEFT)) {
         for(unsigned int i = 0; i < m_pieces.size(); i++) {
-            if (intersects(m_pieces[i]->getPosition().getX(), m_pieces[i]->getPosition().getY(),
-                m_pieces[i]->getDimension().getX(),m_pieces[i]->getDimension().getY(),
-                InputHandler::Instance()->getMouseButtonPosition()->getX(),
-                InputHandler::Instance()->getMouseButtonPosition()->getY())
-                ||
-                intersects(m_pieces[i]->getPosition2().getX(), m_pieces[i]->getPosition2().getY(),
-                m_pieces[i]->getDimension2().getX(),m_pieces[i]->getDimension2().getY(),
-                InputHandler::Instance()->getMouseButtonPosition()->getX(),
-                InputHandler::Instance()->getMouseButtonPosition()->getY())){
+            if (intersects(*InputHandler::Instance()->getMouseButtonPosition(),m_pieces[i]->getPosition(), m_pieces[i]->getDimension()) ||
+                intersects(*InputHandler::Instance()->getMouseButtonPosition(),m_pieces[i]->getPosition(), m_pieces[i]->getDimension())) {
 
                 overlaps.push_back(m_pieces[i]);
             }
@@ -231,6 +234,8 @@ void PlayState::update() {
             zs.clear();
         }
     }
+    overlaps.clear();
+    zs.clear();
 
     for(unsigned int i = 0; i < m_pieces.size(); i++) {
         m_pieces[i]->update();
@@ -256,12 +261,13 @@ void PlayState::render() {
     }
 }
 
-bool PlayState::intersects(int objectX, int objectY, int dimensionsX, int dimensionsY, int mouseX, int mouseY) {
-    if (mouseX < objectX || mouseY < objectY) {
+bool PlayState::intersects(Vec2 mouse, Vec2 object, Vec2 dimensions) {
+    if(mouse.getX() < object.getX() || mouse.getY() < object.getY()) {
         return false;
     }
-    if (mouseX > objectX + dimensionsX || mouseY > objectY + dimensionsY) {
-        return false;
+
+    if(mouse.getX() > object.getX() + dimensions.getX() || mouse.getY() > object.getY() + dimensions.getY()) {
+         return false;
     }
     return true;
 }

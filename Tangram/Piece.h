@@ -9,7 +9,7 @@ public:
     Piece() {}
     Piece(Vec2 position, Vec2 position2, Vec2 dimension, Vec2 dimension2,SDL_Color color):
         m_position(position), m_position2(position2), m_dimension(dimension), m_dimension2(dimension2), m_color(color),
-        offset(Vec2(0,0)), offset2(Vec2(0,0)), m_height(0) {}
+        offset(Vec2(0,0)), offset2(Vec2(0,0)), m_height(0), m_selected(false), dragging(false), m_bReleased(true)  {}
     ~Piece(){}
 
     void render();
@@ -19,7 +19,7 @@ public:
     void setOffset(Vec2 off) { offset = off; }
     void setOffset2(Vec2 off2) { offset2 = off2; }
 
-    void setSelected(bool selected) { m_selected = selected;  }
+    void setSelected(bool selected) { m_selected = selected; }
     bool getSelected() { return m_selected; }
 
     void setZ(int z) { m_height = z; }
@@ -51,6 +51,6 @@ private:
     Vec2 offset2;
 
     bool dragging;
-    bool playing;
+    bool m_bReleased;
     bool m_selected;
 };
