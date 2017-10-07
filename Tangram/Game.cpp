@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include "InputHandler.h"
 #include "Game.h"
 #include "Piece.h"
@@ -29,6 +30,7 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height, in
             }
             else {
                 std::cout << "Render initialization failed\n" << std::endl;
+
                 return false;
             }
         }
@@ -77,10 +79,12 @@ void Game::handleEvents() {
 void Game::clean() {
     SDL_DestroyRenderer(m_pRenderer);
     SDL_DestroyWindow(m_pWindow);
+    TTF_Quit();
     SDL_Quit();
 }
 
 void Game::quit() {
     SDL_Quit();
+    TTF_Quit();
     Game::Instance()->m_bRunning = false;
 }

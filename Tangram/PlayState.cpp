@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <ctime>
 #include <algorithm>
 #include "PlayState.h"
@@ -100,6 +101,8 @@ bool PlayState::onEnter() {
     solutions.push_back(solution_33);
     std::vector<std::vector<int>> solution_34 = { {100, 400}, {100, 300}, {500, 100}, {500, 300}, {300, 300}, {200, 200}, {100, 100} };
     solutions.push_back(solution_34);
+    std::vector<std::vector<int>> solution_35 = { {400, 100}, {200, 100}, {300, 200}, {500, 300}, {100, 100}, {200, 500}, {100, 400} };
+    solutions.push_back(solution_35);
 
     // Oblik kvadrata.
     int left_x = rand() % (750 - 600 + 1) + 600;
@@ -241,6 +244,7 @@ void PlayState::update() {
 
     for(unsigned int i = 0; i < m_pieces.size(); i++) {
         m_pieces[i]->update();
+        std::cout<<"Piece["<<i<<"]" << "X:" << m_pieces[i]->getPosition().getX() << ", Y:" << m_pieces[i]->getPosition().getY() << std::endl;
         for (std::vector<std::vector<int>> solution : solutions) {
             if (m_pieces[0]->checkWin(solution[0]) &&
                 m_pieces[1]->checkWin(solution[1]) &&
@@ -261,6 +265,25 @@ void PlayState::render() {
     for (unsigned int i = 0; i < m_pieces.size(); i++) {
         m_pieces[i]->render();
     }
+    TTF_Init();
+    TTF_Font * font = TTF_OpenFont("assets/font.ttf", 46);
+    drawText(font, { 255, 255, 0, 0 }, "Tangram Puzzle - the reckonining", 500, 100, 200, 0);
+    drawText(font, { 255, 255, 255, 0 }, "Press ESC to pause.", 300, 50, 100, 600);
+    drawText(font, { 255, 255, 255, 0 }, "Hold left mouse button to drag a piece.", 500, 50, 100, 650);
+}
+
+void PlayState::drawText(TTF_Font* font, SDL_Color color, char* text, int texW, int texH, int x, int y) {
+    SDL_Surface* surface = TTF_RenderText_Solid(font, text, color);
+    if (surface == NULL) { 
+        std::cout<<"Unable to render text surface! SDL_ttf Error:"<< TTF_GetError()<<std::endl;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(Game::Instance()->getRenderer(), surface);
+    SDL_Rect dstrect = {x, y, texW, texH};
+    SDL_RenderCopy(Game::Instance()->getRenderer(), texture, NULL, &dstrect);
+    SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
+    SDL_DestroyTexture(texture);
+
+
 }
 
 bool PlayState::intersects(Vec2 mouse, Vec2 object, Vec2 dimensions) {
