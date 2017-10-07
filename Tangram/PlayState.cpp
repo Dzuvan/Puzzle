@@ -244,7 +244,7 @@ void PlayState::update() {
 
     for(unsigned int i = 0; i < m_pieces.size(); i++) {
         m_pieces[i]->update();
-        std::cout<<"Piece["<<i<<"]" << "X:" << m_pieces[i]->getPosition().getX() << ", Y:" << m_pieces[i]->getPosition().getY() << std::endl;
+        // std::cout<<"Piece["<<i<<"]" << "X:" << m_pieces[i]->getPosition().getX() << ", Y:" << m_pieces[i]->getPosition().getY() << std::endl;
         for (std::vector<std::vector<int>> solution : solutions) {
             if (m_pieces[0]->checkWin(solution[0]) &&
                 m_pieces[1]->checkWin(solution[1]) &&
@@ -282,8 +282,6 @@ void PlayState::drawText(TTF_Font* font, SDL_Color color, char* text, int texW, 
     SDL_RenderCopy(Game::Instance()->getRenderer(), texture, NULL, &dstrect);
     SDL_QueryTexture(texture, NULL, NULL, &texW, &texH);
     SDL_DestroyTexture(texture);
-
-
 }
 
 bool PlayState::intersects(Vec2 mouse, Vec2 object, Vec2 dimensions) {

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <SDL_ttf.h>
 #include "GameState.h"
 
 class Object;
@@ -15,6 +16,8 @@ public:
     virtual bool onExit();
 
     virtual std::string getStateID() const { return s_gameOverID; }
+    
+    void drawText(TTF_Font* font, SDL_Color color, char* text, int texW, int texH, int x, int y);
 private:
     static void s_gameOverToMain();
     static void s_restartPlay();
