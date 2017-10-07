@@ -30,10 +30,12 @@ void Piece::update() {
                 m_bReleased = false;
             }
         }
+    }
 
         if (!InputHandler::Instance()->getMouseButtonState(LEFT) && dragging) {
             offset = Vec2(0, 0);
             offset2 = Vec2(0, 0);
+
             dragging = false;
             m_bReleased = true;
 
@@ -59,7 +61,6 @@ void Piece::update() {
             m_position = *InputHandler::Instance()->getMousePosition() - offset;
             m_position2 = *InputHandler::Instance()->getMousePosition() - offset2;
         }
-    }
 }
 
 bool Piece::intersects(Vec2 object, Vec2 dimensions, Vec2 mouse) {

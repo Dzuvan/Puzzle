@@ -59,7 +59,7 @@ bool PlayState::onEnter() {
     solutions.push_back(solution_11);
     std::vector<std::vector<int>> solution_12 = { {400, 400}, {200, 200}, {300, 400}, {500, 100}, {100, 300}, {200, 300}, {100, 100} };
     solutions.push_back(solution_12);
-    std::vector<std::vector<int>> solution_13 = { {100, 400}, {100, 500}, {100, 100}, {500, 300}, {300, 300}, {300, 200}, {200, 100} };
+    std::vector<std::vector<int>> solution_13 = { {100, 400}, {100, 300}, {100, 100}, {500, 300}, {300, 300}, {300, 200}, {200, 100} };
     solutions.push_back(solution_13);
     std::vector<std::vector<int>> solution_14 = { {300, 200}, {200, 100}, {100, 400}, {500, 100}, {100, 100}, {300, 500}, {200, 400} };
     solutions.push_back(solution_14);
@@ -99,6 +99,10 @@ bool PlayState::onEnter() {
     solutions.push_back(solution_31);
     std::vector<std::vector<int>> solution_32 = { {300, 300}, {200, 100}, {100, 100}, {500, 300}, {100, 300}, {300, 500}, {200, 200} };
     solutions.push_back(solution_32);
+    std::vector<std::vector<int>> solution_33 = { {100, 300}, {100, 500}, {500, 100}, {500, 300}, {300, 300}, {200, 200}, {100, 100} };
+    solutions.push_back(solution_33);
+    std::vector<std::vector<int>> solution_34 = { {100, 400}, {100, 300}, {500, 100}, {500, 300}, {300, 300}, {200, 200}, {100, 100} };
+    solutions.push_back(solution_34);
 
     // Square shape
     int left_x = rand() % (750 - 600 + 1) + 600;
@@ -196,7 +200,7 @@ bool PlayState::onExit() {
     }
     std::vector<Piece*>().swap(m_pieces);
     InputHandler::Instance()->reset();
-    std::cout << "Exiting playState\n" << std::endl;
+    std::cout << "Exiting Play State\n" << std::endl;
     return true;
 }
 
@@ -211,17 +215,19 @@ void PlayState::update() {
     if (InputHandler::Instance()->getMouseButtonState(LEFT)) {
         for(unsigned int i = 0; i < m_pieces.size(); i++) {
             if (intersects(*InputHandler::Instance()->getMouseButtonPosition(),m_pieces[i]->getPosition(), m_pieces[i]->getDimension()) ||
-                intersects(*InputHandler::Instance()->getMouseButtonPosition(),m_pieces[i]->getPosition(), m_pieces[i]->getDimension())) {
+                intersects(*InputHandler::Instance()->getMouseButtonPosition(),m_pieces[i]->getPosition2(), m_pieces[i]->getDimension2())) {
 
                 overlaps.push_back(m_pieces[i]);
+                zs.push_back(m_pieces[i]->getZ());
             }
         }
     }
 
     if (InputHandler::Instance()->getMouseButtonState(LEFT)) {
         for (Piece* o : overlaps) {
-            zs.push_back(o->getZ());
+            //std::cout <<"Overalped Z-s"<< o->getZ() << std::endl;
             int it = *std::max_element(std::begin(zs), std::end(zs));
+            //std::cout <<"Max Z value: "<<it << std::endl;
             if (o->getZ() == it) {
                 o->setSelected(true);
             }
@@ -234,8 +240,6 @@ void PlayState::update() {
             zs.clear();
         }
     }
-    overlaps.clear();
-    zs.clear();
 
     for(unsigned int i = 0; i < m_pieces.size(); i++) {
         m_pieces[i]->update();
