@@ -1,7 +1,5 @@
 #include <iostream>
-#include <vector>
 #include <SDL.h>
-#include <SDL_image.h>
 #include "InputHandler.h"
 #include "Game.h"
 #include "Piece.h"
@@ -35,13 +33,14 @@ bool Game::init(const char *title, int xpos, int ypos, int width, int height, in
         std::cout<<"SDL Initialization failed\n"<<std::endl;
         return false;
     }
-    std::cout<<"Initialization compstd::vector<std::vector<int>>e\n"<<std::endl;
 
     m_pGameStateMachine = new GameStateMachine();
     m_pGameStateMachine->changeState(new MainMenuState());
 
     SoundManager::Instance()->load("assets/click-sound.wav","1", sound_type(1));
     SoundManager::Instance()->load("assets/victory.ogg","2", sound_type(0));
+
+    std::cout<<"Initialization complete"<<std::endl;
     m_bRunning = true;
     return true;
 }

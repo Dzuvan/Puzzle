@@ -1,6 +1,4 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include "Object.h"
 #include "TextureManager.h"
 #include "LoaderParams.h"

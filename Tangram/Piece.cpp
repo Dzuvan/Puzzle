@@ -1,5 +1,3 @@
-#include <iostream>
-#include <SDL_mixer.h>
 #include "Piece.h"
 #include "Game.h"
 #include "Vec2.h"

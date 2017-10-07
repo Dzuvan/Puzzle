@@ -1,6 +1,5 @@
 #include <SDL.h>
 #include "Board.h"
-#include "Vec2.h"
 #include "Game.h"
 
 void Board::render(){

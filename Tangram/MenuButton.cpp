@@ -1,4 +1,3 @@
-#include <iostream>
 #include <SDL.h>
 #include "SObject.h"
 #include "LoaderParams.h"

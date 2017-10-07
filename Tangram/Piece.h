@@ -8,8 +8,12 @@ class Piece{
 public:
     Piece() {}
     Piece(Vec2 position, Vec2 position2, Vec2 dimension, Vec2 dimension2,SDL_Color color):
-        m_position(position), m_position2(position2), m_dimension(dimension), m_dimension2(dimension2), m_color(color),
-        offset(Vec2(0,0)), offset2(Vec2(0,0)), m_height(0), m_selected(false), dragging(false), m_bReleased(true)  {}
+        m_position(position), m_position2(position2), 
+        m_dimension(dimension), m_dimension2(dimension2), 
+        m_color(color),
+        offset(Vec2(0,0)), offset2(Vec2(0,0)),
+        m_height(0), 
+        m_selected(false), dragging(false), m_bReleased(true)  {}
     ~Piece(){}
 
     void render();

@@ -1,7 +1,6 @@
 #pragma once 
 
 #include "LoaderParams.h"
-#include "Vec2.h"
 #include "Object.h"
 #include <string>
 

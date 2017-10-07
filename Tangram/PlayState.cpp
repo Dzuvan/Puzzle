@@ -1,11 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <string>
 #include <SDL.h>
 #include <ctime>
 #include <algorithm>
-#include "Object.h"
-#include "MenuButton.h"
 #include "PlayState.h"
 #include "Game.h"
 #include "InputHandler.h"
@@ -16,8 +13,6 @@
 #include "Game.h"
 #include "SoundManager.h"
 #include "GameOverState.h"
-#include "TextureManager.h"
-#include "LoaderParams.h"
 
 const std::string PlayState::s_playID = "PLAY";
 
@@ -28,13 +23,15 @@ Piece* piece4;
 Piece* piece5;
 Piece* piece6;
 Piece* piece7;
-std::vector<Piece*>m_pieces;
 
 bool PlayState::onEnter() {
 
     // Bez ovoga random uvek bira istu vrednost. 
     srand(time(NULL));
-
+    
+    // Sve moguce kombinacije resenja se smestaju u vektor. 
+    // Jedno resenje predstavlja vektor od 7 vektora jer se oblici konstruisu na osnovu x i y koordinate prvog dela oblika.
+    // Neefikasno ali if it ain't broke don't fix it. 
     std::vector<std::vector<int>> solution_1 = { {300, 400}, {200, 300}, {100, 100}, {500, 300}, {100, 300}, {300, 200}, {200, 100} };
     solutions.push_back(solution_1);
     std::vector<std::vector<int>> solution_2 = { {300, 400}, {200, 300}, {500, 100}, {500, 300}, {100, 300}, {200, 200}, {100, 100} };
@@ -104,7 +101,7 @@ bool PlayState::onEnter() {
     std::vector<std::vector<int>> solution_34 = { {100, 400}, {100, 300}, {500, 100}, {500, 300}, {300, 300}, {200, 200}, {100, 100} };
     solutions.push_back(solution_34);
 
-    // Square shape
+    // Oblik kvadrata.
     int left_x = rand() % (750 - 600 + 1) + 600;
     int left_y = rand() % (500 - 100 + 1) + 100;
     Vec2 dimension = Vec2(100, 200);
@@ -115,7 +112,7 @@ bool PlayState::onEnter() {
     piece = new Piece(Vec2(left_x, left_y), Vec2(right_x, right_y), dimension, dimension_2, color1);
     piece->setZ(1);
 
-    // Underline shape
+    // Oblik donje linije(_).
     int u_left_x = rand() % (750 - 600 + 1) + 600;
     int u_left_y = rand() % (500 - 100 + 1) + 100;
     Vec2 dimension_u1 = Vec2(100, 100);
@@ -126,7 +123,7 @@ bool PlayState::onEnter() {
     piece2 = new Piece(Vec2(u_left_x, u_left_y), Vec2(u_right_x, u_right_y), dimension_u1, dimension_u2, color2);
     piece2->setZ(2);
 
-    // IBeam shape
+    // Oblik uspravne linije. 
     int i_left_x = rand() % (750 - 600 + 1) + 600;
     int i_left_y = rand() % (500 - 100 + 1) + 100;
     Vec2 dimension_i1 = Vec2(100, 100);
@@ -137,7 +134,7 @@ bool PlayState::onEnter() {
     piece3 = new Piece(Vec2(i_left_x, i_left_y), Vec2(i_right_x, i_right_y), dimension_i1, dimension_i2, color3);
     piece3->setZ(3);
 
-    // "G" shape
+    // Oblik obrnutog cirilicnog g slova.
     int g_left_x = rand() % (750 - 600 + 1) + 600;
     int g_left_y = rand() % (500 - 100 + 1) + 100;
     Vec2 dimension_g1 = Vec2(100, 300);
@@ -148,7 +145,7 @@ bool PlayState::onEnter() {
     piece4 = new Piece(Vec2(g_left_x, g_left_y), Vec2(g_right_x, g_right_y), dimension_g1, dimension_g2, color4);
     piece4->setZ(4);
 
-    //Fat shape
+    //Debeljko od 5 kvadrata.
     int f_left_x = rand() % (750 - 600 + 1) + 600;
     int f_left_y = rand() % (500 - 100 + 1) + 100;
     Vec2 dimension_f1 = Vec2(100, 300);
@@ -159,7 +156,7 @@ bool PlayState::onEnter() {
     piece5 = new Piece(Vec2(f_left_x, f_left_y), Vec2(f_right_x, f_right_y), dimension_f1, dimension_f2, color5);
     piece5->setZ(5);
 
-    // L shape
+    // Oblik oborenog L slova. 
     int l_left_x = rand() % (750 - 600 + 1) + 600;
     int l_left_y = rand() % (500 - 100 + 1) + 100;
     Vec2 dimension_l1 = Vec2(300, 100);
@@ -170,7 +167,7 @@ bool PlayState::onEnter() {
     piece6 = new Piece(Vec2(l_left_x, l_left_y), Vec2(l_right_x, l_right_y), dimension_l1, dimension_l2, color6);
     piece6->setZ(6);
 
-    // R shape
+    // Oblik palog na stomak cirilicnog slova g.
     int r_left_x = rand() % (750 - 600 + 1) + 600;
     int r_left_y = rand() % (500 - 100 + 1) + 100;
     Vec2 dimension_r1 = Vec2(300, 100);
@@ -211,7 +208,10 @@ void PlayState::update() {
     if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
         Game::Instance()->getStateMachine()->pushState(new PauseState());
     }
-
+    // Biranje dela slagilice koji se pomera.
+    // Prvo se pokupe svi delovi ispod kursora.
+    // Zatim se proverava koji deo ima najvišu z vrednost.
+    // Poslednje crtani objekat ima najvisu tako da ce se uvek hendlati objekat koji je na vrhu.
     if (InputHandler::Instance()->getMouseButtonState(LEFT)) {
         for(unsigned int i = 0; i < m_pieces.size(); i++) {
             if (intersects(*InputHandler::Instance()->getMouseButtonPosition(),m_pieces[i]->getPosition(), m_pieces[i]->getDimension()) ||
@@ -225,9 +225,7 @@ void PlayState::update() {
 
     if (InputHandler::Instance()->getMouseButtonState(LEFT)) {
         for (Piece* o : overlaps) {
-            //std::cout <<"Overalped Z-s"<< o->getZ() << std::endl;
             int it = *std::max_element(std::begin(zs), std::end(zs));
-            //std::cout <<"Max Z value: "<<it << std::endl;
             if (o->getZ() == it) {
                 o->setSelected(true);
             }

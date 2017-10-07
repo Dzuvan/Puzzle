@@ -1,13 +1,10 @@
 #include <iostream>
-#include <vector>
-#include <string>
 #include "GameOverState.h"
 #include "Game.h"
 #include "MainMenuState.h"
 #include "PlayState.h"
 #include "TextureManager.h"
 #include "LoaderParams.h"
-#include "AnimatedGraphic.h"
 #include "MenuButton.h"
 #include "SoundManager.h"
 #include "InputHandler.h"

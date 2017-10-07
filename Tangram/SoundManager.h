@@ -27,8 +27,6 @@ private:
     SoundManager();
     SoundManager(const SoundManager&);
 
-    SoundManager &operator=(const SoundManager&);
-
     ~SoundManager();
 
     static SoundManager* s_pInstance;
