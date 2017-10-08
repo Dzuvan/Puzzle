@@ -211,6 +211,11 @@ void PlayState::update() {
     if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
         Game::Instance()->getStateMachine()->pushState(new PauseState());
     }
+    if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_R)) {
+        for (Piece* p : m_pieces) {
+            p->setReset();
+        }
+    }
     // Biranje dela slagilice koji se pomera.
     // Prvo se pokupe svi delovi ispod kursora.
     // Zatim se proverava koji deo ima najvišu z vrednost.
@@ -236,9 +241,9 @@ void PlayState::update() {
     }
     else {
         for (Piece* o : overlaps) {
-            o->setSelected(false);
-            overlaps.clear();
-            zs.clear();
+                o->setSelected(false);
+                overlaps.clear();
+                zs.clear();
         }
     }
 

@@ -8,7 +8,7 @@ class Piece{
 public:
     Piece() {}
     Piece(Vec2 position, Vec2 position2, Vec2 dimension, Vec2 dimension2,SDL_Color color):
-        m_position(position), m_position2(position2), 
+        m_position(position), m_position2(position2), m_position_reset(position), m_position2_reset(position2),
         m_dimension(dimension), m_dimension2(dimension2), 
         m_color(color),
         offset(Vec2(0,0)), offset2(Vec2(0,0)),
@@ -25,6 +25,8 @@ public:
 
     void setSelected(bool selected) { m_selected = selected; }
     bool getSelected() { return m_selected; }
+    
+    void setReset() {m_position = m_position_reset; m_position2 = m_position2_reset;}
 
     void setZ(int z) { m_height = z; }
     int getZ() const { return m_height; }
@@ -47,6 +49,9 @@ private:
 
     Vec2 m_position;
     Vec2 m_position2;
+
+    Vec2 m_position_reset;
+    Vec2 m_position2_reset;
 
     Vec2 m_dimension;
     Vec2 m_dimension2;
