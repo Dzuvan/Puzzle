@@ -38,17 +38,18 @@ void Piece::update() {
             m_bReleased = true;
 
             // Snap to grid.
-            if (m_position.getX() % 100 != 0 || m_position.getY() % 100 != 0) {
+            if (m_position.getX() % 100 != 0 || m_position.getY() % 100 != 0 && 
+                m_position2.getX() % 100 != 0 || m_position2.getY() % 100 != 0) {
                 if (m_position.getX() > 100 && m_position.getX() + m_dimension.getX() > 100 &&
                     m_position.getY() > 100 && m_position.getY() + m_dimension.getY() < 700 &&
                     m_position2.getX() > 100 && m_position2.getX() + m_dimension2.getX() < 700 &&
                     m_position2.getY() > 100 && m_position2.getY() + m_dimension2.getY() < 700) {
 
-                    m_position.setX((m_position.getX() / 100) * 100);
-                    m_position.setY((m_position.getY() / 100) * 100);
+                    m_position.setX(((m_position.getX()+50) / 100) * 100);
+                    m_position.setY(((m_position.getY()+50) / 100) * 100);
 
-                    m_position2.setX((m_position2.getX() / 100) * 100);
-                    m_position2.setY((m_position2.getY() / 100) * 100);
+                    m_position2.setX(((m_position2.getX()+50) / 100) * 100);
+                    m_position2.setY(((m_position2.getY()+50) / 100) * 100);
                     SoundManager::Instance()->playSound("1", 0);
                 }
             }
